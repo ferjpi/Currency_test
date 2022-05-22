@@ -1,7 +1,9 @@
 import { useEffect, useReducer } from "react";
 import { useFetchGetCurrencies, useFetchGetExchanges } from "../../hooks/query";
+import { formatRate } from "../../utils";
 import Form from "../currency/form";
 import ShowConvertion from "../../components/showConvertion";
+import { MainStyle, PreStyle, SectionStyle } from "../../assets/styles";
 
 const initialMainState = {
   from: "CHF",
@@ -50,10 +52,6 @@ function Main() {
   const { isLoading, status, data: rawDataCurrency } = useFetchGetCurrencies();
   const { status: exchangeStatus, data: rawExchanges } = useFetchGetExchanges();
 
-  const formatRate = (rate) => {
-    return rate.toFixed(5);
-  };
-
   useEffect(() => {
     let isSubscribed = true;
     if (isSubscribed && status === "success" && rawDataCurrency) {
@@ -68,21 +66,22 @@ function Main() {
   }, [rawDataCurrency, isLoading, status, exchangeStatus, rawExchanges]);
 
   return (
-    <main>
-      <section>{/* here will go the char */}</section>
-      <section>
+    <MainStyle>
+      <SectionStyle>{/* here will go the char */}</SectionStyle>
+      <SectionStyle>
         <p>Welcome to our convert currency platform</p>
         <div>
-          <div>
-            <p>Conversion Rate</p>
-            <p>{formatRate(mainState.rate)}</p>
-          </div>
+          <p>Converted Amount </p>
+          <PreStyle>{mainState.convertedAmount.toFixed(2)}</PreStyle>
           <Form submitData={dispatch} currencies={mainState.currencies} />
           {/* <ShowConvertion loading={loading} error={error} data={data} /> */}
-          <p>Converted Amount: {mainState.convertedAmount}</p>
+          <div>
+            <p>Conversion Rate</p>
+            <PreStyle>{formatRate(mainState.rate)}</PreStyle>
+          </div>
         </div>
-      </section>
-    </main>
+      </SectionStyle>
+    </MainStyle>
   );
 }
 

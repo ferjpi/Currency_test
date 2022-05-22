@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import {
+  ButtonStyle,
+  FormStyle,
+  InputNumberStyle,
+} from "../../../assets/styles";
 
 const initialFormState = {
   from: "CHF",
@@ -33,39 +38,44 @@ function Form({ submitData, currencies }) {
   }, [submit, from, to, amount, submitData]);
 
   return (
-    <form onSubmit={submitForm}>
-      <select
-        placeholder="from"
-        value={from}
-        onChange={(e) =>
-          setFormState((prevState) => ({ ...prevState, from: e.target.value }))
-        }
-      >
-        {currencies.map((currency) => {
-          return (
-            <option key={currency} value={currency}>
-              {currency}
-            </option>
-          );
-        })}
-      </select>
-      <select
-        type="text"
-        placeholder="to"
-        value={to}
-        onChange={(e) =>
-          setFormState((prevState) => ({ ...prevState, to: e.target.value }))
-        }
-      >
-        {currencies.map((currency) => {
-          return (
-            <option key={currency} value={currency}>
-              {currency}
-            </option>
-          );
-        })}
-      </select>
-      <input
+    <FormStyle onSubmit={submitForm}>
+      <div>
+        <select
+          placeholder="from"
+          value={from}
+          onChange={(e) =>
+            setFormState((prevState) => ({
+              ...prevState,
+              from: e.target.value,
+            }))
+          }
+        >
+          {currencies.map((currency) => {
+            return (
+              <option key={currency} value={currency}>
+                {currency}
+              </option>
+            );
+          })}
+        </select>
+        <select
+          type="text"
+          placeholder="to"
+          value={to}
+          onChange={(e) =>
+            setFormState((prevState) => ({ ...prevState, to: e.target.value }))
+          }
+        >
+          {currencies.map((currency) => {
+            return (
+              <option key={currency} value={currency}>
+                {currency}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <InputNumberStyle
         type="number"
         placeholder="amount"
         value={amount}
@@ -76,8 +86,8 @@ function Form({ submitData, currencies }) {
           }))
         }
       />
-      <button type="submit">Convert</button>
-    </form>
+      <ButtonStyle type="submit">Convert</ButtonStyle>
+    </FormStyle>
   );
 }
 
