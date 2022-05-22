@@ -25,3 +25,7 @@ input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+.react-datepicker-wrapper {
+  width: 30% !important;
+}

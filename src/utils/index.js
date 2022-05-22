@@ -10,3 +10,8 @@ export const getColorCode = () => {
   }
   return code;
 };
+
+export const formatDate = (d) => {
+  const dateInst = new Date(d).toISOString().substring(0, 10);
+  return dateInst;
+};

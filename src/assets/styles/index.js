@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
 
 export const MainStyle = styled.main`
   block-size: 100vh;
@@ -63,4 +64,14 @@ export const BarContainerStyle = styled.div`
 export const ContainerStyle = styled.section`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+`;
+
+export const DatePickerStyle = styled(DatePicker)`
+  margin: 0 auto;
+  height: 25px;
+
+  text-align: center;
+
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
 `;

@@ -47,6 +47,10 @@ function Form({ submitData, currencies }) {
     return () => (isSubscribed = false);
   }, [submit, from, to, amount, submitData]);
 
+  useEffect(() => {
+    submitData({ type: "CHANGE_CURRENCY", payload: { from, to } });
+  }, [from, submitData, to]);
+
   return (
     <FormStyle onSubmit={submitForm}>
       <GroupSelectStyle>

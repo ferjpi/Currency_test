@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useReducer } from "react";
-import { useFetchGetCurrencies, useFetchGetExchanges } from "../../hooks/query";
-import { formatRate, getColorCode } from "../../utils";
+import {
+  useFetchGetCurrencies,
+  useFetchGetExchanges,
+  useFetchGetHistorical,
+} from "../../hooks/query";
+import { formatRate, getColorCode, formatDate } from "../../utils";
 import Form from "../currency/form";
 import BarChart from "../../components/barChart";
 import {
@@ -9,12 +13,18 @@ import {
   SectionStyle,
   SelectStyle,
   ContainerStyle,
+  DatePickerStyle,
 } from "../../assets/styles";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 const initialMainState = {
   from: "CHF",
   to: "USD",
   amount: 0,
+  date: new Date(),
+  isDataLoaded: false,
+  formattedDate: formatDate(new Date()),
   makeQuery: false,
   currencies: [],
   rawDataCurrency: [],
@@ -60,33 +70,34 @@ const reducer = (state, action) => {
         options,
         defaultOptions,
       };
-    case "GET_EXCHANGE":
-      const { rates } = payload;
-      const r = rates[state.to] / rates[state.from];
-      const c = state.chartList.datasets.map((el) => {
-        el.data = [rates[el.label]];
+    case "LOAD_HISTORICAL":
+      const ra = payload.rates[state.to] / payload.rates[state.from];
+      const ca = state.chartList.datasets.map((el) => {
+        el.data = [payload.rates[el.label]];
         return el;
       });
-      state.chartList.datasets = c;
-      const op = Object.entries(rates).map((el) => ({
+      state.chartList.datasets = ca;
+      const opp = Object.entries(payload.rates).map((el) => ({
         label: el[0],
         value: el[1],
       }));
+
       return {
         ...state,
-        rates,
-        rate: parseFloat(r),
+        rates: payload.rates,
+        rate: parseFloat(ra),
         defaultOptions: [
           {
             label: "CHF",
-            value: rates["CHF"],
+            value: payload.rates["CHF"],
           },
           {
             label: "USD",
-            value: rates["USD"],
+            value: payload.rates["USD"],
           },
         ],
-        options: op,
+        options: opp,
+        isDataLoaded: true,
       };
     case "MAKE_CALCULATION":
       const { from, to, amount } = payload;
@@ -106,6 +117,15 @@ const reducer = (state, action) => {
       const list = { ...state.chartList };
       list.datasets = datasets;
       return { ...state, chartList: list };
+    case "SET_DATE":
+      return { ...state, date: payload, formattedDate: formatDate(payload) };
+    case "CHANGE_CURRENCY":
+      return {
+        ...state,
+        from: payload.from,
+        to: payload.to,
+        rate: state.rates[payload.to] / state.rates[payload.from],
+      };
     default:
       return state;
   }
@@ -119,11 +139,12 @@ function Main() {
     status,
     data: rawDataCurrency,
   } = useFetchGetCurrencies();
+
   const {
-    isLoading: isLoadingExchanges,
-    status: exchangeStatus,
-    data: rawExchanges,
-  } = useFetchGetExchanges();
+    isLoading: isLoadingHistorical,
+    status: historicalStatus,
+    data: rawHistorical,
+  } = useFetchGetHistorical(mainState.formattedDate);
 
   const defaultOptions = useMemo(() => {
     const defaultOpt = mainState.options.filter(
@@ -132,15 +153,14 @@ function Main() {
     return defaultOpt;
   }, [mainState.options, mainState.from, mainState.to]);
 
-  console.log("de ", defaultOptions);
   useEffect(() => {
     let isSubscribed = true;
     if (isSubscribed && status === "success" && rawDataCurrency) {
       dispatch({ type: "LOAD_CURRENCIES", payload: rawDataCurrency });
     }
 
-    if (isSubscribed && exchangeStatus === "success" && rawExchanges) {
-      dispatch({ type: "GET_EXCHANGE", payload: rawExchanges });
+    if (isSubscribed && historicalStatus === "success" && rawHistorical) {
+      dispatch({ type: "LOAD_HISTORICAL", payload: rawHistorical });
     }
 
     return () => (isSubscribed = false);
@@ -148,11 +168,11 @@ function Main() {
     rawDataCurrency,
     isLoadingCurrencies,
     status,
-    exchangeStatus,
-    rawExchanges,
+    historicalStatus,
+    rawHistorical,
   ]);
 
-  if (isLoadingCurrencies || isLoadingExchanges) return <p>...is loading</p>;
+  if (!mainState.isDataLoaded) return <p>...is loading</p>;
 
   return (
     <MainStyle>
@@ -185,6 +205,11 @@ function Main() {
         <SectionStyle>
           <h2>Search historical rates</h2>
           <p>Select the period that you want to look for</p>
+          <DatePickerStyle
+            selected={mainState.date}
+            onChange={(e) => dispatch({ type: "SET_DATE", payload: e })}
+            dateFormat="yyyy-MM-dd"
+          />
         </SectionStyle>
       </ContainerStyle>
     </MainStyle>
