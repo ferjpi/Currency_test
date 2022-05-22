@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { BsArrowLeftRight } from "react-icons/bs";
 import {
   ButtonStyle,
   FormStyle,
   InputNumberStyle,
+  GroupSelectStyle,
 } from "../../../assets/styles";
 
 const initialFormState = {
@@ -23,6 +25,14 @@ function Form({ submitData, currencies }) {
     setFormState((prevState) => ({ ...prevState, submit: true }));
   };
 
+  const changeExchanges = () => {
+    setFormState((prevState) => ({
+      ...prevState,
+      from: to,
+      to: from,
+    }));
+  };
+
   useEffect(() => {
     let isSubscribed = true;
 
@@ -39,7 +49,7 @@ function Form({ submitData, currencies }) {
 
   return (
     <FormStyle onSubmit={submitForm}>
-      <div>
+      <GroupSelectStyle>
         <select
           placeholder="from"
           value={from}
@@ -58,6 +68,9 @@ function Form({ submitData, currencies }) {
             );
           })}
         </select>
+        <button onClick={changeExchanges}>
+          <BsArrowLeftRight />
+        </button>
         <select
           type="text"
           placeholder="to"
@@ -74,7 +87,7 @@ function Form({ submitData, currencies }) {
             );
           })}
         </select>
-      </div>
+      </GroupSelectStyle>
       <InputNumberStyle
         type="number"
         placeholder="amount"

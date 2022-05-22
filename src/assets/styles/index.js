@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Select from "react-select";
 
 export const MainStyle = styled.main`
   block-size: 100vh;
@@ -43,4 +44,18 @@ export const ButtonStyle = styled.button`
   margin: 4px 0;
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.4);
+`;
+
+export const GroupSelectStyle = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+export const SelectStyle = styled(Select)`
+  width: 60%;
+  margin-top: 5px;
+`;
+
+export const BarContainerStyle = styled.div`
+  width: 90%;
 `;
