@@ -26,3 +26,11 @@ export function useFetchGetCurrencies() {
     )
   );
 }
+
+export function useFetchGetHistorical({ date }) {
+  return useQuery("getHistorical", () =>
+    fetch(
+      `https://openexchangerates.org/api/historical/${date}.json?app_id=${APP_ID}`
+    ).then((res) => res.json())
+  );
+}

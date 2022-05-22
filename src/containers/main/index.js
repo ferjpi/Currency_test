@@ -8,6 +8,7 @@ import {
   PreStyle,
   SectionStyle,
   SelectStyle,
+  ContainerStyle,
 } from "../../assets/styles";
 
 const initialMainState = {
@@ -95,7 +96,6 @@ const reducer = (state, action) => {
       const convertedAmount = amount * rate;
       return { ...state, from, to, amount, rate, convertedAmount };
     case "UPDATE_CHART":
-      console.log("apy ", payload);
       const datasets = payload.map((el) => {
         return {
           label: el.label,
@@ -104,9 +104,7 @@ const reducer = (state, action) => {
         };
       });
       const list = { ...state.chartList };
-      console.log("daaatase ", datasets);
       list.datasets = datasets;
-      console.log("list ", list);
       return { ...state, chartList: list };
     default:
       return state;
@@ -171,18 +169,24 @@ function Main() {
 
         <BarChart data={mainState.chartList} />
       </SectionStyle>
-      <SectionStyle>
-        <p>Welcome to our convert currency platform</p>
-        <div>
-          <p>Converted Amount </p>
-          <PreStyle>{mainState.convertedAmount.toFixed(2)}</PreStyle>
-          <Form submitData={dispatch} currencies={mainState.currencies} />
+      <ContainerStyle>
+        <SectionStyle>
+          <h2>Welcome to our convert currency platform</h2>
           <div>
-            <p>Conversion Rate</p>
-            <PreStyle>{formatRate(mainState.rate)}</PreStyle>
+            <p>Converted Amount </p>
+            <PreStyle>{mainState.convertedAmount.toFixed(2)}</PreStyle>
+            <Form submitData={dispatch} currencies={mainState.currencies} />
+            <div>
+              <p>Conversion Rate</p>
+              <PreStyle>{formatRate(mainState.rate)}</PreStyle>
+            </div>
           </div>
-        </div>
-      </SectionStyle>
+        </SectionStyle>
+        <SectionStyle>
+          <h2>Search historical rates</h2>
+          <p>Select the period that you want to look for</p>
+        </SectionStyle>
+      </ContainerStyle>
     </MainStyle>
   );
 }

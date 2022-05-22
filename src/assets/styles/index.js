@@ -59,3 +59,8 @@ export const SelectStyle = styled(Select)`
 export const BarContainerStyle = styled.div`
   width: 90%;
 `;
+
+export const ContainerStyle = styled.section`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+`;
