@@ -75,3 +75,7 @@ export const DatePickerStyle = styled(DatePicker)`
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.4);
 `;
+
+export const TitleStyle = styled.h2`
+  font-size: 1.2rem;
+`;

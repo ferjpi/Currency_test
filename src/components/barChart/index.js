@@ -33,7 +33,6 @@ const options = {
 };
 
 function BarChart({ data }) {
-  console.log("dataaa: ", data);
   return (
     <BarContainerStyle>
       <Bar options={options} data={data} />

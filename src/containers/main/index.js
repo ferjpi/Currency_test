@@ -3,17 +3,17 @@ import {
   useFetchGetCurrencies,
   useFetchGetHistorical,
 } from "../../hooks/query";
-import { formatRate, getColorCode, formatDate } from "../../utils";
-import Form from "../currency/form";
+import { getColorCode, formatDate } from "../../utils";
 import BarChart from "../../components/barChart";
 import {
   MainStyle,
-  PreStyle,
   SectionStyle,
   SelectStyle,
   ContainerStyle,
-  DatePickerStyle,
 } from "../../assets/styles";
+
+import InputRateSection from "../../components/inputRateSection";
+import SelectHistoricalSection from "../../components/selectHistoricalSection";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -162,11 +162,8 @@ function Main() {
     data: rawDataCurrency,
   } = useFetchGetCurrencies();
 
-  const {
-    isLoading: isLoadingHistorical,
-    status: historicalStatus,
-    data: rawHistorical,
-  } = useFetchGetHistorical(mainState.formattedDate);
+  const { status: historicalStatus, data: rawHistorical } =
+    useFetchGetHistorical(mainState.formattedDate);
 
   const defaultOptions = useMemo(() => {
     const defaultOpt = mainState.options.filter(
@@ -211,34 +208,9 @@ function Main() {
 
         <BarChart data={mainState.chartList} />
       </SectionStyle>
-      <ContainerStyle>
-        <SectionStyle>
-          <h2>Welcome to our convert currency platform</h2>
-          <div>
-            <p>Converted Amount </p>
-            <PreStyle>{mainState.convertedAmount.toFixed(2)}</PreStyle>
-            <Form
-              submitData={dispatch}
-              currencies={mainState.currencies}
-              from={mainState.from}
-              to={mainState.to}
-              amount={mainState.amount}
-            />
-            <div>
-              <p>Conversion Rate</p>
-              <PreStyle>{formatRate(mainState.rate)}</PreStyle>
-            </div>
-          </div>
-        </SectionStyle>
-        <SectionStyle>
-          <h2>Search historical rates</h2>
-          <p>Select the period that you want to look for</p>
-          <DatePickerStyle
-            selected={mainState.date}
-            onChange={(e) => dispatch({ type: "SET_DATE", payload: e })}
-            dateFormat="yyyy-MM-dd"
-          />
-        </SectionStyle>
+      <ContainerStyle arial-role="container">
+        <InputRateSection mainState={mainState} dispatch={dispatch} />
+        <SelectHistoricalSection mainState={mainState} dispatch={dispatch} />
       </ContainerStyle>
     </MainStyle>
   );
