@@ -79,3 +79,21 @@ export const DatePickerStyle = styled(DatePicker)`
 export const TitleStyle = styled.h2`
   font-size: 1.2rem;
 `;
+
+export const FillEmptyStyle = styled.div`
+  min-block-size: 40vh;
+  inline-size: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const FillEmptySmallStyle = styled.div`
+  min-block-size: 30vh;
+  inline-size: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
