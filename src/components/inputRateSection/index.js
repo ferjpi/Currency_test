@@ -3,23 +3,31 @@ import { SectionStyle, PreStyle, TitleStyle } from "../../assets/styles";
 import Form from "../../containers/currency/form";
 import { formatRate } from "../../utils";
 
-function InputRateSection({ mainState, dispatch }) {
+function InputRateSection({
+  dispatch,
+  convertedAmount,
+  currencies,
+  from,
+  to,
+  amount,
+  rate,
+}) {
   return (
     <SectionStyle>
       <TitleStyle>Welcome to our convert currency platform</TitleStyle>
-      <div aria-roledescription="Container">
+      <div arial-role="Container">
         <p>Converted Amount </p>
-        <PreStyle>{mainState.convertedAmount.toFixed(2)}</PreStyle>
+        <PreStyle>{convertedAmount.toFixed(2)}</PreStyle>
         <Form
           submitData={dispatch}
-          currencies={mainState.currencies}
-          from={mainState.from}
-          to={mainState.to}
-          amount={mainState.amount}
+          currencies={currencies}
+          from={from}
+          to={to}
+          amount={amount}
         />
         <div>
           <p>Conversion Rate</p>
-          <PreStyle>{formatRate(mainState.rate)}</PreStyle>
+          <PreStyle>{formatRate(rate)}</PreStyle>
         </div>
       </div>
     </SectionStyle>

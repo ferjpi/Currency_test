@@ -2,12 +2,12 @@ import React from "react";
 import { SectionStyle, SelectStyle } from "../../assets/styles";
 import BarChart from "../barChart";
 
-function HeaderSection({ mainState, dispatch, defaultOptions }) {
+function HeaderSection({ dispatch, defaultOptions, options, chartList }) {
   return (
     <SectionStyle>
       {defaultOptions.length ? (
         <SelectStyle
-          options={mainState.options}
+          options={options}
           defaultValue={defaultOptions}
           isMulti
           name="currencies"
@@ -15,7 +15,7 @@ function HeaderSection({ mainState, dispatch, defaultOptions }) {
         />
       ) : null}
 
-      <BarChart data={mainState.chartList} />
+      <BarChart data={chartList} />
     </SectionStyle>
   );
 }

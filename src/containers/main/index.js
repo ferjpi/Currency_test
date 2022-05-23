@@ -191,13 +191,22 @@ function Main() {
   return (
     <MainStyle>
       <HeaderSection
-        mainState={mainState}
         dispatch={dispatch}
         defaultOptions={defaultOptions}
+        options={mainState.options}
+        chartList={mainState.chartList}
       />
       <ContainerStyle arial-role="container">
-        <InputRateSection mainState={mainState} dispatch={dispatch} />
-        <SelectHistoricalSection mainState={mainState} dispatch={dispatch} />
+        <InputRateSection
+          dispatch={dispatch}
+          convertedAmount={mainState.convertedAmount}
+          currencies={mainState.currencies}
+          from={mainState.from}
+          to={mainState.to}
+          amount={mainState.amount}
+          rate={mainState.rate}
+        />
+        <SelectHistoricalSection dispatch={dispatch} date={mainState.date} />
       </ContainerStyle>
     </MainStyle>
   );
