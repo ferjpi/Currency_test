@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useReducer } from "react";
 import {
   useFetchGetCurrencies,
-  useFetchGetExchanges,
   useFetchGetHistorical,
 } from "../../hooks/query";
 import { formatRate, getColorCode, formatDate } from "../../utils";
@@ -126,6 +125,29 @@ const reducer = (state, action) => {
         to: payload.to,
         rate: state.rates[payload.to] / state.rates[payload.from],
       };
+    case "CHANGE_CURRENCY_FROM":
+      return {
+        ...state,
+        from: payload,
+        rate: state.rates[state.to] / state.rates[payload],
+      };
+    case "CHANGE_CURRENCY_TO":
+      return {
+        ...state,
+        to: payload,
+        rate: state.rates[state.to] / state.rates[payload],
+      };
+    case "CHANGE_EXCHANGES":
+      return {
+        ...state,
+        to: payload.to,
+        from: payload.from,
+      };
+    case "SET_AMOUNT":
+      return {
+        ...state,
+        amount: payload,
+      };
     default:
       return state;
   }
@@ -195,7 +217,13 @@ function Main() {
           <div>
             <p>Converted Amount </p>
             <PreStyle>{mainState.convertedAmount.toFixed(2)}</PreStyle>
-            <Form submitData={dispatch} currencies={mainState.currencies} />
+            <Form
+              submitData={dispatch}
+              currencies={mainState.currencies}
+              from={mainState.from}
+              to={mainState.to}
+              amount={mainState.amount}
+            />
             <div>
               <p>Conversion Rate</p>
               <PreStyle>{formatRate(mainState.rate)}</PreStyle>

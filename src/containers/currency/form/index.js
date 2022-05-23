@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { BsArrowLeftRight } from "react-icons/bs";
 import {
   ButtonStyle,
@@ -7,49 +7,27 @@ import {
   GroupSelectStyle,
 } from "../../../assets/styles";
 
-const initialFormState = {
-  from: "CHF",
-  to: "USD",
-  amount: 0,
-  submit: false,
-};
-
-function Form({ submitData, currencies }) {
-  const [formState, setFormState] = useState(initialFormState);
-
-  const { from, to, amount, submit } = formState;
-
-  const submitForm = (e) => {
-    e.preventDefault();
-    //Todo; run validations
-    setFormState((prevState) => ({ ...prevState, submit: true }));
-  };
-
-  const changeExchanges = () => {
-    setFormState((prevState) => ({
-      ...prevState,
-      from: to,
-      to: from,
-    }));
-  };
-
-  useEffect(() => {
-    let isSubscribed = true;
-
-    if (isSubscribed && submit) {
+function Form({ submitData, currencies, from, to, amount }) {
+  const submitForm = useCallback(
+    (e) => {
+      e.preventDefault();
       submitData({
         type: "MAKE_CALCULATION",
         payload: { from, to, amount: Number(amount) },
       });
-      setFormState((prevState) => ({ ...prevState, submit: false }));
-    }
+    },
+    [from, to, amount, submitData]
+  );
 
-    return () => (isSubscribed = false);
-  }, [submit, from, to, amount, submitData]);
-
-  useEffect(() => {
-    submitData({ type: "CHANGE_CURRENCY", payload: { from, to } });
-  }, [from, submitData, to]);
+  const changeExchanges = useCallback(() => {
+    submitData({
+      type: "CHANGE_EXCHANGES",
+      payload: {
+        to,
+        from,
+      },
+    });
+  }, [to, from, submitData]);
 
   return (
     <FormStyle onSubmit={submitForm}>
@@ -58,10 +36,10 @@ function Form({ submitData, currencies }) {
           placeholder="from"
           value={from}
           onChange={(e) =>
-            setFormState((prevState) => ({
-              ...prevState,
-              from: e.target.value,
-            }))
+            submitData({
+              type: "CHANGE_CURRENCY_FROM",
+              payload: e.target.value,
+            })
           }
         >
           {currencies.map((currency) => {
@@ -80,7 +58,10 @@ function Form({ submitData, currencies }) {
           placeholder="to"
           value={to}
           onChange={(e) =>
-            setFormState((prevState) => ({ ...prevState, to: e.target.value }))
+            submitData({
+              type: "CHANGE_CURRENCY_TO",
+              payload: e.target.value,
+            })
           }
         >
           {currencies.map((currency) => {
@@ -97,10 +78,10 @@ function Form({ submitData, currencies }) {
         placeholder="amount"
         value={amount}
         onChange={(e) =>
-          setFormState((prevState) => ({
-            ...prevState,
-            amount: e.target.value,
-          }))
+          submitData({
+            type: "SET_AMOUNT",
+            payload: e.target.value,
+          })
         }
       />
       <ButtonStyle type="submit">Convert</ButtonStyle>
