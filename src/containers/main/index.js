@@ -4,16 +4,11 @@ import {
   useFetchGetHistorical,
 } from "../../hooks/query";
 import { getColorCode, formatDate } from "../../utils";
-import BarChart from "../../components/barChart";
-import {
-  MainStyle,
-  SectionStyle,
-  SelectStyle,
-  ContainerStyle,
-} from "../../assets/styles";
+import { MainStyle, ContainerStyle } from "../../assets/styles";
 
 import InputRateSection from "../../components/inputRateSection";
 import SelectHistoricalSection from "../../components/selectHistoricalSection";
+import HeaderSection from "../../components/headerSection";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -195,19 +190,11 @@ function Main() {
 
   return (
     <MainStyle>
-      <SectionStyle>
-        {defaultOptions.length ? (
-          <SelectStyle
-            options={mainState.options}
-            defaultValue={defaultOptions}
-            isMulti
-            name="currencies"
-            onChange={(e) => dispatch({ type: "UPDATE_CHART", payload: e })}
-          />
-        ) : null}
-
-        <BarChart data={mainState.chartList} />
-      </SectionStyle>
+      <HeaderSection
+        mainState={mainState}
+        dispatch={dispatch}
+        defaultOptions={defaultOptions}
+      />
       <ContainerStyle arial-role="container">
         <InputRateSection mainState={mainState} dispatch={dispatch} />
         <SelectHistoricalSection mainState={mainState} dispatch={dispatch} />
