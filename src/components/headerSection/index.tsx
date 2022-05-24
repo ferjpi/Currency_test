@@ -18,9 +18,7 @@ function HeaderSection({
           isMulti
           name="currencies"
           data-testid="multi-select"
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            dispatch({ type: "UPDATE_CHART", payload: e })
-          }
+          onChange={(e) => dispatch({ type: "UPDATE_CHART", payload: e })}
         />
       ) : null}
 
