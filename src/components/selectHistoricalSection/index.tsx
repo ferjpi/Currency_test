@@ -10,6 +10,7 @@ function SelectHistoricalSection({ dispatch, date }: IHistoricalProps) {
       <DatePickerStyle
         selected={date as Date}
         onChange={(e) => dispatch({ type: "SET_DATE", payload: e })}
+        maxDate={new Date()}
         dateFormat="yyyy-MM-dd"
       />
     </SectionStyle>
