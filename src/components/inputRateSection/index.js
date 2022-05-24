@@ -15,9 +15,11 @@ function InputRateSection({
   return (
     <SectionStyle>
       <TitleStyle>Welcome to our convert currency platform</TitleStyle>
-      <div arial-role="Container">
+      <div aria-label="container">
         <p>Converted Amount </p>
-        <PreStyle>{convertedAmount.toFixed(2)}</PreStyle>
+        <PreStyle aria-label="result of conversion">
+          {convertedAmount.toFixed(2)}
+        </PreStyle>
         <Form
           submitData={dispatch}
           currencies={currencies}
@@ -27,7 +29,9 @@ function InputRateSection({
         />
         <div>
           <p>Conversion Rate</p>
-          <PreStyle>{formatRate(rate)}</PreStyle>
+          <PreStyle data-testid="conversion-rate" aria-label="conversion rate">
+            {formatRate(rate)}
+          </PreStyle>
         </div>
       </div>
     </SectionStyle>

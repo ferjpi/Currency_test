@@ -1,8 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+/* eslint-disable testing-library/no-debugging-utils */
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+test("renders placeholder app", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  const loadingElement = screen.getByText(/...loading/i);
+  expect(loadingElement).toBeInTheDocument();
 });

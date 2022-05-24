@@ -2,7 +2,7 @@ import { useEffect, useMemo, useReducer } from "react";
 import {
   useFetchGetCurrencies,
   useFetchGetHistorical,
-} from "../../hooks/query";
+} from "../../hooks/useQuery";
 import { MainStyle, ContainerStyle } from "../../assets/styles";
 import { reducer, initialMainState } from "./utils";
 
@@ -45,14 +45,14 @@ function Main() {
   if (!mainState.isDataLoaded) return <EmptyPlaceholder />;
 
   return (
-    <MainStyle>
+    <MainStyle data-testid="main-content">
       <HeaderSection
         dispatch={dispatch}
         defaultOptions={defaultOptions}
         options={mainState.options}
         chartList={mainState.chartList}
       />
-      <ContainerStyle arial-role="container">
+      <ContainerStyle role="container">
         <InputRateSection
           dispatch={dispatch}
           convertedAmount={mainState.convertedAmount}
