@@ -17,7 +17,10 @@ function InputRateSection({
       <TitleStyle>Welcome to our convert currency platform</TitleStyle>
       <div aria-label="container">
         <p>Converted Amount </p>
-        <PreStyle aria-label="result of conversion">
+        <PreStyle
+          aria-label="result of conversion"
+          data-testid="conversion-result"
+        >
           {convertedAmount.toFixed(2)}
         </PreStyle>
         <Form

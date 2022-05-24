@@ -11,6 +11,7 @@ function HeaderSection({ dispatch, defaultOptions, options, chartList }) {
           defaultValue={defaultOptions}
           isMulti
           name="currencies"
+          data-testid="multi-select"
           onChange={(e) => dispatch({ type: "UPDATE_CHART", payload: e })}
         />
       ) : null}

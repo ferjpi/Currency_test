@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/no-debugging-utils */
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { QueryProvider } from "../../../hooks/query";
 import {
   useFetchGetCurrencies,
@@ -69,11 +69,34 @@ describe("<Main/>", () => {
         <Main />
       </QueryProvider>
     );
-    screen.debug();
 
     const titleElement = screen.getByText(/Search historical rates/i);
 
     expect(titleElement).toBeInTheDocument();
+  });
+
+  test("Expect the amount conversion to change", async () => {
+    render(
+      <QueryProvider>
+        <Main />
+      </QueryProvider>
+    );
+
+    const resultElement = screen.getByTestId("conversion-result");
+
+    expect(resultElement.innerHTML).toBe("0.00");
+
+    const inputElement = screen.getByTestId("input-amount");
+
+    fireEvent.change(inputElement, {
+      target: {
+        value: 500,
+      },
+    });
+
+    fireEvent.click(screen.getByTestId("submit"));
+
+    expect(resultElement.innerHTML).not.toBe("0.00");
   });
 
   afterAll(() => {

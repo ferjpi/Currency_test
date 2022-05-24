@@ -76,6 +76,7 @@ function Form({ submitData, currencies, from, to, amount }) {
       <InputNumberStyle
         type="number"
         placeholder="amount"
+        data-testid="input-amount"
         value={amount}
         onChange={(e) =>
           submitData({
@@ -84,7 +85,9 @@ function Form({ submitData, currencies, from, to, amount }) {
           })
         }
       />
-      <ButtonStyle type="submit">Convert</ButtonStyle>
+      <ButtonStyle data-testid="submit" type="submit">
+        Convert
+      </ButtonStyle>
     </FormStyle>
   );
 }
