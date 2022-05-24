@@ -1,3 +1,5 @@
+import { IAction } from "../../../models";
+import React from "react";
 import { useCallback } from "react";
 import { BsArrowLeftRight } from "react-icons/bs";
 import {
@@ -7,9 +9,17 @@ import {
   GroupSelectStyle,
 } from "../../../assets/styles";
 
-function Form({ submitData, currencies, from, to, amount }) {
+interface IFormProps {
+  submitData: React.Dispatch<IAction>;
+  currencies: string[];
+  from: string;
+  to: string;
+  amount: number;
+}
+
+function Form({ submitData, currencies, from, to, amount }: IFormProps) {
   const submitForm = useCallback(
-    (e) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       submitData({
         type: "MAKE_CALCULATION",
@@ -35,7 +45,7 @@ function Form({ submitData, currencies, from, to, amount }) {
         <select
           placeholder="from"
           value={from}
-          onChange={(e) =>
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             submitData({
               type: "CHANGE_CURRENCY_FROM",
               payload: e.target.value,
@@ -54,10 +64,9 @@ function Form({ submitData, currencies, from, to, amount }) {
           <BsArrowLeftRight />
         </button>
         <select
-          type="text"
           placeholder="to"
           value={to}
-          onChange={(e) =>
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             submitData({
               type: "CHANGE_CURRENCY_TO",
               payload: e.target.value,
@@ -78,10 +87,10 @@ function Form({ submitData, currencies, from, to, amount }) {
         placeholder="amount"
         data-testid="input-amount"
         value={amount}
-        onChange={(e) =>
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           submitData({
             type: "SET_AMOUNT",
-            payload: e.target.value,
+            payload: parseFloat(e.target.value),
           })
         }
       />

@@ -18,7 +18,7 @@ export function useFetchGetCurrencies() {
   );
 }
 
-export function useFetchGetHistorical(date) {
+export function useFetchGetHistorical(date: string | Date) {
   return useQuery(
     ["getHistorical", date],
     () =>

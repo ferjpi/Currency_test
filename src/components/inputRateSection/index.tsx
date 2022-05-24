@@ -2,6 +2,7 @@ import React from "react";
 import { SectionStyle, PreStyle, TitleStyle } from "../../assets/styles";
 import Form from "../../containers/currency/form";
 import { formatRate } from "../../utils";
+import { IRateProps } from "./model";
 
 function InputRateSection({
   dispatch,
@@ -11,7 +12,7 @@ function InputRateSection({
   to,
   amount,
   rate,
-}) {
+}: IRateProps) {
   return (
     <SectionStyle>
       <TitleStyle>Welcome to our convert currency platform</TitleStyle>

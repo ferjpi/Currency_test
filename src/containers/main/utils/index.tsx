@@ -1,6 +1,8 @@
+import { IAction, IOption } from "models";
 import { formatDate, getColorCode } from "../../../utils";
+import { IState } from "../model";
 
-export const initialMainState = {
+export const initialMainState: IState = {
   from: "CHF",
   to: "USD",
   amount: 0,
@@ -9,7 +11,6 @@ export const initialMainState = {
   formattedDate: formatDate(new Date()),
   makeQuery: false,
   currencies: [],
-  rawDataCurrency: [],
   rates: {},
   rate: 0,
   convertedAmount: 0,
@@ -32,23 +33,23 @@ export const initialMainState = {
   },
 };
 
-export const reducer = (state, action) => {
+export const reducer = (state: IState, action: IAction): IState => {
   const { type, payload } = action;
 
   switch (type) {
     case "LOAD_CURRENCIES":
       const currencies = Object.keys(payload);
-      const options = currencies.map((currency) => ({
-        value: "0",
+      const options: IOption[] = currencies.map((currency) => ({
+        value: 0,
         label: currency,
       }));
       const defaultOptions = options.filter(
-        (option) => option.value === state.from || option.value === state.to
+        (option: IOption) =>
+          option.label === state.from || option.label === state.to
       );
       return {
         ...state,
         currencies,
-        rawDataCurrency: payload,
         options,
         defaultOptions,
       };
@@ -59,15 +60,19 @@ export const reducer = (state, action) => {
         return el;
       });
       state.chartList.datasets = ca;
-      const opp = Object.entries(payload.rates).map((el) => ({
-        label: el[0],
-        value: el[1],
-      }));
+      const opp: IOption[] = Object.entries(
+        payload.rates as { [r: string]: number }
+      ).map(
+        (el): IOption => ({
+          label: el[0],
+          value: el[1],
+        })
+      );
 
       return {
         ...state,
         rates: payload.rates,
-        rate: parseFloat(ra),
+        rate: ra,
         defaultOptions: [
           {
             label: "CHF",
@@ -89,7 +94,7 @@ export const reducer = (state, action) => {
       const convertedAmount = amount * rate;
       return { ...state, from, to, amount, rate, convertedAmount };
     case "UPDATE_CHART":
-      const datasets = payload.map((el) => {
+      const datasets = payload.map((el: { label: string; value: number }) => {
         return {
           label: el.label,
           data: [el.value],

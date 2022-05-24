@@ -6,7 +6,14 @@ import {
   Title,
   Tooltip,
   Legend,
+  CoreChartOptions,
+  ElementChartOptions,
+  PluginChartOptions,
+  DatasetChartOptions,
 } from "chart.js";
+import { _DeepPartialObject } from "chart.js/types/utils";
+import { IChartList } from "../../models";
+import React from "react";
 import { Bar } from "react-chartjs-2";
 import { BarContainerStyle } from "../../assets/styles";
 
@@ -19,7 +26,14 @@ ChartJS.register(
   Legend
 );
 
-const options = {
+type Options = _DeepPartialObject<
+  CoreChartOptions<"bar"> &
+    ElementChartOptions<"bar"> &
+    PluginChartOptions<"bar"> &
+    DatasetChartOptions<"bar">
+>;
+
+const options: Options = {
   responsive: true,
   plugins: {
     legend: {
@@ -32,7 +46,7 @@ const options = {
   },
 };
 
-function BarChart({ data }) {
+function BarChart({ data }: { data: IChartList }) {
   return (
     <BarContainerStyle>
       <Bar options={options} data={data} />

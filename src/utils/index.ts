@@ -1,8 +1,8 @@
-export const formatRate = (rate) => {
+export const formatRate = (rate: number) => {
   return rate.toFixed(5);
 };
 
-export const getColorCode = () => {
+export const getColorCode = (): string => {
   var makeColorCode = "0123456789ABCDEF";
   var code = "#";
   for (var count = 0; count < 6; count++) {
@@ -11,7 +11,7 @@ export const getColorCode = () => {
   return code;
 };
 
-export const formatDate = (d) => {
+export const formatDate = (d: string | Date) => {
   const dateInst = new Date(d).toISOString().substring(0, 10);
   return dateInst;
 };

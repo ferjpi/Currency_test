@@ -12,6 +12,7 @@ import HeaderSection from "../../components/headerSection";
 
 import "react-datepicker/dist/react-datepicker.css";
 import EmptyPlaceholder from "../../components/emptyPlaceholder";
+import React from "react";
 
 function Main() {
   const [mainState, dispatch] = useReducer(reducer, initialMainState);
@@ -39,7 +40,9 @@ function Main() {
       dispatch({ type: "LOAD_HISTORICAL", payload: rawHistorical });
     }
 
-    return () => (isSubscribed = false);
+    return () => {
+      isSubscribed = false;
+    };
   }, [rawDataCurrency, currencyStatus, historicalStatus, rawHistorical]);
 
   if (!mainState.isDataLoaded) return <EmptyPlaceholder />;

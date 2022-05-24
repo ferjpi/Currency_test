@@ -1,8 +1,14 @@
 import React from "react";
 import { SectionStyle, SelectStyle } from "../../assets/styles";
 import BarChart from "../barChart";
+import { IHeaderProps } from "./model";
 
-function HeaderSection({ dispatch, defaultOptions, options, chartList }) {
+function HeaderSection({
+  dispatch,
+  defaultOptions,
+  options,
+  chartList,
+}: IHeaderProps) {
   return (
     <SectionStyle>
       {defaultOptions.length ? (
@@ -12,7 +18,9 @@ function HeaderSection({ dispatch, defaultOptions, options, chartList }) {
           isMulti
           name="currencies"
           data-testid="multi-select"
-          onChange={(e) => dispatch({ type: "UPDATE_CHART", payload: e })}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            dispatch({ type: "UPDATE_CHART", payload: e })
+          }
         />
       ) : null}
 
